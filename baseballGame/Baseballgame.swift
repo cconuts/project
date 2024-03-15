@@ -9,6 +9,7 @@ import Foundation
 
 
 class BaseballGame {
+
     init() {
         start()
     }
@@ -17,8 +18,11 @@ class BaseballGame {
         print("게임을 시작합니다")
         
         func makeAnswer() -> String {
-            let targetNumber = (1...9).shuffled().prefix(3).map { String($0) }.joined(separator: ",")
-            return targetNumber
+            let targetNumber = (0...9).shuffled().prefix(3).map { String($0) }
+            guard targetNumber[0] != String(0) else {
+                return String(0)
+            }
+            return "targetNumber.joined()"
         }
     
         let answer = makeAnswer()
@@ -32,13 +36,14 @@ class BaseballGame {
             
             for (index, char) in input.enumerated() {
                 let digit = String(char)
-                let index: String.Index = answer.index(answer.startIndex, offsetBy: 0)
+                let answerIndex: String.Index = answer.index(answer.startIndex, offsetBy: index)
+                let answerDigit = String(answer[answerIndex])
                 
-                if digit == String(answer[index]) {
+                if digit == answerDigit {
                     strikes += 1
                 } else if answer.contains(String(digit)) {
                     balls += 1
-                } else if input.contains("0") || Set(input).count < 3 {
+                } else if Set(input).count < 3 {
                     print("올바르지 않은 입력값입니다")
                     continue
                 }
